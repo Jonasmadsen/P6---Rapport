@@ -1,0 +1,97 @@
+\section{Related Work}\label{sec:related_work}
+In this section, we explore \gls{nn} models that have use cases in anomaly detection, as well as some related work that utilizes these models for this purpose.
+
+\subsection{Autoencoder}
+An autoencoder is a type of unsupervised \gls{nn}. Figure \ref{fig:autoencoder} shows the architecture of an autoencoder.
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Pictures/Sprint_2/autoencoder.png}
+    \caption{Architecture of an autoencoder.}
+    \label{fig:autoencoder}
+\end{figure}
+
+\noindent
+The purpose of an autoencoder is to learn a representation of given input data. Autoencoders achieve this by learning to compress and encode the input data, and from this encoded version of the input, reconstruct the data using a decoder. An autoencoder consists of at least three main parts: An encoder, a decoder, and a bottleneck. The encoder consists of a \gls{visiblelayer} and some \glspl{hiddenlayer}. Layer $i$ in the encoder has the same or fewer neurons than layer $i-1$. Decreasing the number of neurons in the inner layers compress and encodes the input data. The last \gls{hiddenlayer} of the encoder (the middle layer) is also the input layer for the decoder. The decoder consists of the input layer and some additional \glspl{hiddenlayer}, with an output layer at the end (\gls{visiblelayer}). The decoder's job is the opposite of the encoder. The decoder gets the output of the encoder and decodes it to reconstruct the original data. Together the encoder and decoder create a bottleneck, also called the latent vector representation or code layer, as seen in Figure \ref{fig:autoencoder}. \Gls{backprop} using \gls{graddesc} is used during the training to reduce reconstruction loss by changing weights and biases in the neurons \cite{autoencoder_used}\cite{autoencoder_into}. The loss function usually used in autoencoders is mean squared error:\newline
+\begin{equation}
+    J(x, z)=\lvert x - z \rvert^2
+\end{equation}
+Where $x$ is the original input and $z$ is the reconstructed input.
+
+In \cite{hawkins_he_williams_baxter_2002} anomaly detection is performed on large multivariate databases through the use of a Replicator Neural Network (of which autoencoders are a subcategory). The Replicator Neural Network attempts to replicate each input data point. The average reconstruction error over all variables determines the outlier factor. A higher outlier factor means a higher likelihood that the data point is an outlier. This method proves useful in determining outliers, effectively identifying intrusions in a network intrusion data set, as well as correctly identifying 77\% of cases in a breast cancer data set.
+
+\subsection{Variational Autoencoder}\label{sc:vae}
+A \gls{vae} is a stochastic \gls{nn} and generative model, based on autoencoders. Generative models all share the feature of generating new data based on existing data. The decoder network of an autoencoder can be considered a generative model since it generates new data based on the latent vector provided by the encoder network. However, the encoder network determines the latent vector based on the original input. Thus, to generate new data, the latent vector must contain data that is not a direct encoding of input data.
+In theory, it is possible to randomly inject some data into the latent vector, and have the decoder network generate some data based on the injected data. However, since the latent vector is inherently latent, we cannot assume that injected data has any meaning to the decoder. Given an autoencoder network trained to reconstruct images, randomly assigning a latent vector will probably result in images that are just noise.
+
+\Glspl{vae} attempt to solve this problem. In a \gls{vae}, the latent vector represents a probability distribution instead of real values. The latent vector is two vectors, a mean vector, and a standard deviation vector. Figure \ref{fig:architecture_vae} shows the architecture of a \gls{vae}. The figure also shows how two vectors form the latent vector, and the decoder samples from these vectors to obtain input.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Pictures/Sprint_2/vae.png}
+    \caption{The architecture of a \gls{vae}. $\boldsymbol{\mu}$ is the mean vector and $\boldsymbol{\Sigma}$ is the standard deviation vector.}
+    \label{fig:architecture_vae}
+\end{figure}
+
+Training the encoder network can allow it to capture the probability distribution of the input data set. The decoder network can sample from the distribution and generate a new output that follows the same probability distribution and thus resembles the input data set, while at the same time being new data. The sampling of the distribution, however, present some new problems.
+
+Firstly, the \gls{lossfunc} needs to be changed, since training the \gls{vae} based on the Euclidean Distance and Sigmoid Cross Entropy function alone, will result in probability distributions that essentially "hard-code" the inputs as distributions. We want to force the network to generate probability distributions that follow a Gaussian distribution, such that the network will focus on features shared between the inputs instead of just encoding the specific input. To enforce this, we introduce a composite cost function, consisting of both the original Euclidean Distance and Sigmoid Cross Entropy functions, and the \gls{kldiv}. \gls{kldiv} measures how much one distribution is different from another. Using this, we can penalize the network for generating distributions that are far from a Gaussian distribution \cite{understanding_vae}.
+
+Secondly, we run into a problem when attempting \gls{backprop} on this network, since a sample of a probability distribution cannot be differentiated (as required by \gls{backprop} with \gls{graddesc}). To solve this problem \glspl{vae} utilize the reparameterization-technique. The technique performs sampling from a unit Gaussian distribution (a Gaussian distribution with mean 0 and standard deviation 1) and then computes the sample vector $z$ by:
+\begin{center}
+\begin{equation}
+    z = \boldsymbol{\mu}(X) + \boldsymbol{\sigma}^{1/2}(X) * \epsilon
+    \label{eq:reparameterization}
+\end{equation}
+\end{center}
+Where $\boldsymbol{\mu}(X)$ is the mean vector, $\boldsymbol{\sigma(X)}$ is the standard deviation vector, and $\boldsymbol{\epsilon}$ is a vector of samples of a unit Gaussian distribution, given by $\epsilon \sim \mathcal{N}(0,1)$. 
+The reparameterization-technique moves the sampling operation away from the mean and standard deviation vectors, which need to be differentiable for stochastic \gls{graddesc}, thus allowing for \gls{backprop} \cite{doersch2016tutorial}. Figure \ref{fig:vae:reparam} shows the reparameterization technique on a \gls{vae} architecture.
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{Pictures/Sprint_2/ReparameterizationTechniqueWithout.png}
+    \caption*{\gls{vae} without reparameterization technique}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{Pictures/Sprint_2/ReparameterizationTechniqueWith.png}
+    \caption*{\gls{vae} with reparameterization technique.}
+    \end{subfigure}%
+\caption{VAE with and without the reparameterization technique. Red indicates sampling operations which are non-differentiable. Blue indicates loss functions.}\label{fig:vae:reparam}
+\end{figure}
+
+\cite{vae_anomaly_detection} shows the use of a \gls{vae} for anomaly detection in seasonal key performance indicators for a top internet company. The technique shows excellent performance, with \gls{f1score} ranging from 0.7 to 0.9.
+
+\cite{hawkins_he_williams_baxter_2002} and \cite{vae_anomaly_detection} shows that autoencoders and \glspl{vae} perform well for anomaly detection. However, these network types are not able to perform analysis on sequential data, such as time series data (\cite{vae_anomaly_detection} perform analysis on time series data, but uses a sliding window algorithm to make it non-sequential). The inability to handle sequential data means that these networks cannot capture the temporal dependencies of sequential data, and therefore are not suitable for time series anomaly detection.
+
+\subsection{Recurrent Neural Network}
+A \gls{rnn} is a type of \gls{nn} used for sequential data. In a standard feed-forward \gls{nn}, output, weights, and biases are based solely on input. Standard feed-forward \gls{nn} treats all inputs and outputs independently. When working with sequential data, this is no longer the case. For example, if we want to create a \gls{nn} for translating natural language sentences, a correct translation cannot necessarily be achieved by merely translating each word, one after the other since words in a sentence can have meanings that depend on the other words in the sentence.\cite{rnn_tutorial}
+
+A \gls{rnn} computes output that is dependant on, the input and previous inputs. A \gls{rnn} consists of 3 parts: an input $\boldsymbol{x}$, an output $\boldsymbol{o}$ and a hidden state $s$ (similar to the \glspl{hiddenlayer} of standard \glspl{nn} and autoencoders). These are all parts that also exist in standard \glspl{nn} however a \gls{rnn} calculate them differently. A \gls{rnn} does the same computation repeatedly for each input in a sequence while retaining some information in the hidden state. If we "unfold" a \gls{rnn} by putting the network for each input beside each other it looks like Figure \ref{fig:unfolded_rnn}.\cite{rnn_tutorial}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Pictures/Sprint_2/rnn_unfolded.png}
+    \caption{An unfolded \gls{rnn}. $\boldsymbol{x}$ is input, $\boldsymbol{o}$ is output, and $s$ is hidden state. Subscripts indicate time series steps.\cite{rnn_tutorial}}
+    \label{fig:unfolded_rnn}
+\end{figure}
+
+If we study figure \ref{fig:unfolded_rnn}, we can see that for a time series step $t$, output $\boldsymbol{o_t}$ depends on the \gls{hiddenlayer} $s_t$, which depends on not only the input $\boldsymbol{x_t}$, but also the hidden state for the previous time series step $s_{t-1}$. This allows the network to retain some information between inputs.\cite{rnn_tutorial}
+
+As with other \gls{nn} extensions, \glspl{rnn} presents some problems that need to be addressed. Most significantly, \glspl{rnn} have a problem known as vanishing gradient problem.\cite{rnn_tutorial}
+
+When training a \gls{rnn}, using \gls{backprop}, the network shares parameters between all time steps. At each time step, the gradient depends not only on the current time step but also the previous time steps. This dependency means that the model has to backpropagate gradients throughout the time steps. Due to the nature of \gls{backprop}, this means that \glspl{rnn} have difficulties with learning long-term dependencies, i.e., dependencies between steps that are further apart.\cite{rnn_tutorial}
+
+Variations of \glspl{rnn} exist that counteract the vanishing gradient problem, such as \gls{lstm} and \gls{gru}. \gls{lstm} networks contain units with three gates: input gates, forget gates, and output gates. The forget gate defines how much the unit should remember from the previous hidden state. The input gate determines how much of the newly computed state should determine the new hidden state. The output gate determines how much of the new hidden state the unit exposes to the rest of the network.\cite{lstm_gru_tutorial}
+
+\gls{gru} and \gls{lstm} both use gates that define how they compute the hidden state. However, \gls{gru} only contains two gates: reset gates and update gates. Reset gates determine how the previous hidden state should combine with the current input. The update gate determines what the neural unit remembers of the previous hidden state.\cite{lstm_gru_tutorial}
+
+\cite{related_work_rnn} shows the use of an LSTM-network for use in multivariate time series prediction, and uses prediction errors to determine anomalies.
+
+\subsection{Variational Autoencoder With Recurrent Layers}
+A \gls{vae} with recurrent layers is a type of \gls{vae}, where some of the dense layers are replaced by a \gls{rnn}, such as \gls{lstm} or \gls{gru}. Such a network can achieve a "best-of-both-worlds" result, where the \gls{rnn} layers are used to capture the temporal dependencies that are inherent with time-series data, while the \gls{vae} can elicit the stochasticity that is also present in time series data.
+
+\cite{kdd} use a \gls{vae} with \gls{rnn} layers approach for anomaly detection on multi-variate time series data. They use a combination of \gls{gru} cells, and a \gls{vae} to attempt to reconstruct each data point based on previous data points and determine for each reconstructed data point, how accurate the model was able to reconstruct it, compared to the actual data point. From this, they can compute a reconstruction probability, and if that probability is lower than a threshold, which they compute via Extreme-Value Theory, the point is labeled as an anomaly. They were able to achieve great results with this approach, with an overall F1-score of 0.86.

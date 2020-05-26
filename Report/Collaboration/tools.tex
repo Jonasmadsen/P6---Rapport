@@ -1,0 +1,21 @@
+\FloatBarrier
+\oldsection*{Tools}
+The tools we used to collaborate are not that different from previous \gls{astep} groups as we took their advice on many of them.
+
+\subsection*{Communication}
+Most of the communication was organized on discord. Communication through discord proved beneficial when COVID-19 restrictions send everyone home. Discord has a proper voice channel implementation, and we used this tool in four areas for collaboration.
+ 
+\begin{itemize}
+     \item Supervisor meetings
+     \item Group discussions
+     \item Server group Collaborations
+     \item Super group meetings
+\end{itemize}
+
+\subsection*{Version control}
+Just as the \gls{astep} groups before us, we used the \gls{gitlab} server as a version control system. It now contains code from 2016 to 2020, and serves as shared repository for legacy services and archival of source code.
+
+\Gls{gitlab} is set up with \gls{cicd} using a build server and a \gls{kubernetes} cluster. It works out of the box with simple hello world projects. We found this combination encourages collaboration between groups as we are developing for \gls{astep} on a shared platform.
+
+\subsection*{Deployment}
+We kept the \gls{kubernetes} servers as they seem to work well. It allows us to integrate with \gls{gitlab} and perform \gls{cicd}, besides a few updates and configuration changes it works largely the same, we found this made collaboration easy as a recent version was always live on \gls{astep} for testing. Collaborating when maintaining \gls{kubernetes} was easy as multiple users could use their login to control \gls{kubernetes} simultaneously.

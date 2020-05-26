@@ -1,0 +1,13 @@
+\section{Prototype}
+We design the prototype to work a lot like the finished model, but for univariate data. We made this choice in order to see, if our model could detect anomalies on a simpler dataset before we train it on multivariate data.
+
+\subsection{Implementation of The Prototype}
+As mentioned, we are using \gls{tensorflow} and \gls{keras} for the implementation of the \gls{nn}. 
+\input{Report/Sprint_3/Code/encoder}
+
+\subsection{Dataset For The Prototype}
+Training the \gls{nn} requires a dataset to train on that contains anomalies. Yahoo has a collection of datasets \cite{yahoo_datasets}. One of these datasets (S3) is a collection of time-series data with varying anomalies. This dataset was created by Yahoo to benchmark anomaly detection algorithms. The dataset has both synthetic and real data. The synthetic data has a changing trend, noise, and seasonality, while the real data is data collected by Yahoo from various Yahoo services.
+
+From the S3 dataset we use <synthetic\_85 to train the prototype. This is univariate data, and we use it to test if our \gls{nn} is able to detect anomalies.
+
+\subsection{Training of The Prototype}

@@ -1,0 +1,30 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+with open(full_path, 'r', encoding='utf-8') as file:
+    ts_dataset = TSDataset.from_csv(file, '', labeled=False, columns=[1])
+    tf_dataset = ts_dataset.to_tf_dataset(64, 32)
+    features = len([1])
+
+    rvae = make_model(batch_size, window_size, features, gru_dim, dense_dim)
+    optimizer = keras.optimizers.Adam(lr=1e-4)
+    rvae.compile(optimizer=optimizer, loss='binary_crossentropy', experimental_run_tf_function=False)
+    history = rvae.fit(tf_dataset, epochs=2500, verbose=1, shuffle=False)
+
+    rvae.save(f'models/s3/models/{file_path}.h5')
+    plt.plot(range(len(history.epoch)), history.history['loss'], label='Training Loss')
+\end{minted}
+\caption{Training of network}
+\label{lst:training}
+\end{listing}
+
+\noindent

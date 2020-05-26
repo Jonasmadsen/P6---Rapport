@@ -1,0 +1,27 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def make_windows(data, length=1):
+    # Window cannot be bigger than input size
+    if length > len(data):
+        length = len(data) - 1
+
+    windows = []
+    for i in range(len(data) - length + 1):
+        windows.append(data[i:i + length])
+    return windows
+\end{minted}
+\caption{\texttt{make\_windows} function in \texttt{preprocessing.py}.}
+\label{lst:make_windows}
+\end{listing}
+
+\noindent

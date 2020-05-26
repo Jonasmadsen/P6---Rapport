@@ -1,0 +1,33 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+class KLDivergenceLayer(keras.layers.Layer):
+    def __init__(self, *args, **kwargs):
+        self.is_placeholder = True
+        super(KLDivergenceLayer, self).__init__(*args, **kwargs)
+
+    def call(self, inputs, **kwargs):
+        mu, log_var = inputs
+
+        kl_batch = - .5 * keras.backend.sum(1 + log_var -
+                                            keras.backend.square(mu) -
+                                            keras.backend.exp(log_var), axis=-1)
+
+        self.add_loss(keras.backend.mean(kl_batch), inputs=inputs)
+
+        return inputs
+\end{minted}
+\caption{\gls{kldiv} Layer class.}
+\label{lst:kld_layer}
+\end{listing}
+
+\noindent

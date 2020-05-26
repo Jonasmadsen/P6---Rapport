@@ -1,0 +1,12 @@
+\chapter{Experiment Parameters}\label{app:experiments}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{9}{|c|}{Batch Size Experiment}                                                                                                                                                                                                                                                                 \\ \hline
+GRU & Dense & Window Size & LR   & \multicolumn{2}{c|}{\begin{tabular}[c]{@{}c@{}}Early Stopping\\ (patience, epsilon)\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}[c]{@{}c@{}}Learning rate decay\\ (decay rate, frequency)\end{tabular}} & \begin{tabular}[c]{@{}c@{}}KL-div\\ factor\end{tabular} \\ \hline
+32  & 32    & 32          & 1e-3 & 100                                              & 0                                              & 0.8                                                  & 10                                                  & 0/off                                                   \\ \hline
+\end{tabular}
+\caption{Batch size experiment parameters}
+\label{tab:exp-batchsize}
+\end{table}

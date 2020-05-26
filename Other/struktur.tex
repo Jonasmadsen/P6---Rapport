@@ -1,0 +1,60 @@
+Introduction
+- Introduction to aSTEP
+- aSTEP-2020
+- Contribution to aSTEP-2020
+- Organisation
+
+Sprint 1
+- Sprint Goals
+- Analysing aSTEP-2019
+- Designing aSTEP-2020
+- Risk Management
+- Sprint Review
+
+Sprint 2
+- Sprint Goals
+- Related Work
+- Common Data Interface
+- Service Design
+- Sprint Review
+
+Sprint 3
+- Sprint Goals
+- Network Architecture
+- Technology Assessment
+- Implementation
+- Incorporation with aSTEP
+- Sprint Review
+
+Sprint 4
+- Sprint Goals
+- Testing
+- Baselines
+- Results
+- Sprint Review
+
+Collaboration
+- Time Series Interface
+- Documentation
+- Server Management
+
+Reflections
+    - VAE
+    - Service
+    - Methods
+        - Organisation
+        -
+
+Future Work
+
+Bibliography
+Appendix
+- A
+- B
+
+
+Evaluering parametre:
+Vi har eksperimentelt fundet at batch size 128 og window size 32 fungerer godt på alt data.
+Data er ekstremt afhængigt af korrekt z threshold. Bør baseres på percentile af anomalies i data.
+Data er meget afhængigt af lambda/kl factor. Data med større clusters af anomalies/højere percentile anomalies skal have en mindre factor for ikke at code anomalies.
+Data med mange anomalies trænet med lav lambda kan ikke forventes at kunne identificere anomalies der er ekstremt tæt på reel data.

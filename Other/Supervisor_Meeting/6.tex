@@ -1,0 +1,111 @@
+Supervisor meeting 
+
+Attendies:
+ALL
+
+
+Questions:
+
+Did you include multivariate data in the YAHOO dataset?
+
+Reconstruction Probability is p(x|z), so PDF of N(mean-z, stddev-z) for x?
+Since mean-z and stddev-z are encoded by the encoder, how do we know, that the encoder is not just bad at doing that?
+Do we have to apply the window mean function on the mean-z and stddev-z?
+
+
+kristian has some questions about the reconstruction probability.
+The Reconstruction Probability is p(x|z)
+
+So we can take the probability distribution function to x to get the probality to something... Tung no say again
+
+we can apply that function to x and get that probability of x given z.
+
+When we run the model we get windows of mean and standard diviasion layer.
+
+from the encoder we get zmean and zlog var and encoder input are z mean and z log var sop should we also apply this function to these z laysers.
+
+
+The probability is for each observation not for window
+
+So when we try to get the probability we insert only a single "timestep"/observation.
+
+So for each timestep we have reconstruc probability. We compile the avg. observations by the windows. Does that mean we also do it for z? Tung yes.
+
+After we get the reconstruct probability its like a score, how can we transform a score into a outlier label? We need a threshold. In the kdd paper they use extreme value theroy.
+
+In the last semester they "guessed". We are in unsupervised so we assume we dont have a label so its hard to guess.
+
+Tung haha yeah that last semester. They use extreme value theory. They use it from other paper and it very hard. 
+
+Tung can give us a simpler method that he used in previous paper. 
+
+https://www.kdd.org/kdd2017/papers/view/anomaly-detection-in-streams-with-extreme-value-theory
+
+Is quite hard to uses some extreme value theory that we might use. This is Tungs recommendation. 
+
+First transform the reconstruct probability to z-score. 
+    using z = (x - mu) / phi
+    
+https://wikimedia.org/api/rest v1/media/math/render/svg/5ceed701c4042bb34618535c9a902ca1a937a351
+
+https://en.wikipedia.org/wiki/Standard score
+
+We can assume that the z score follow the normal distribution
+We can choose the s - sigma somthing something. untangleable
+
+Kristian : yes
+
+Jeppe: the tail of the distribution curve, I understand it
+
+Do you see the two wing and the bell. If we choose the value 95 percent of value.
+
+We can think that the one outside of it is outlier.
+
+fx: so if the z score is less than 2 or larger than 2 its outlier
+
+We can think like outlier is only one 1 percent of value.
+
+
+
+
+
+We think there is a problem with the loss function.
+Becuase synth 85 data set get really weird loss that goes down and then up.
+
+Tung: Yes becuase you use the window so the loss function fit with the mini bat and fit with the second minibat.
+
+But overall it should to go down.
+
+We send our loss function
+
+we start 5.3 and end at 5.26 we send image of it. 
+
+maybe our learning rate is to high, so it make the learning not stable, we should reduce learning rate
+
+we have 16 windows per epoch.
+
+We need multivariate data as well as:
+
+Numenta Anomaly Benchmark
+or ECG dataset from UCR
+
+Tung suggest ECG dataset he send us now.
+
+
+When we are done with all these things how long will actual training take for production.
+
+Tung: ahahah what about production
+
+Just the time it takes to train
+
+Tung: it depends on the size of the dataset
+
+On CNN networks you can use GPU to parrallel the operations becuase its matrix operations. But for RNN we have to wait for the finish time step n - 1 to compute n. So it is hard to parallesize.
+
+Our cpu should be enough.
+
+Tung "invite" us to a conference somewhere scientific.
+
+We might write a small paper 2 pages and we can to go conference and "relax"
+
+He send us email where we can see how they did last year.

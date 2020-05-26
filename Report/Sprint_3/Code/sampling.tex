@@ -1,0 +1,26 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def sampling(args):
+    z_mean, z_log_var = args
+    batch = keras.backend.shape(z_mean)[0]
+    timestep = keras.backend.int_shape(z_mean)[1]
+    feature = keras.backend.int_shape(z_mean)[2]
+
+    epsilon = keras.backend.random_normal(shape=(batch, timestep, feature))
+    return z_mean + keras.backend.exp(0.5 * z_log_var) * epsilon
+\end{minted}
+\caption{Sampling function.}
+\label{lst:sampling}
+\end{listing}
+
+\noindent

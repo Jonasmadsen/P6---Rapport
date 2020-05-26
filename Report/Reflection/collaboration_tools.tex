@@ -1,0 +1,27 @@
+\FloatBarrier
+\oldsection*{Collaboration}
+
+\subsection*{Documentation}
+The wiki now contains documentation for every \gls{astep} related activity. There is however, a glaring issue with the current kind of deployment. If \gls{kubernetes} goes down or is over-provisioned, the wiki will get inaccessible. The documentation for starting \gls{kubernetes} is placed in \emph{the wiki} in 'FAQ' and 'server help guides' wiki pages.
+It could potentially be solved by setting better eviction policies in \gls{kubernetes} so the wiki stays up, or move the wiki to another kind of deployment altogether.
+
+\subsection*{Communication}
+While COVID-19 certainly hindered productivity, it could have been worse if shared voice channels were not accessible. We recommend a similar setup to Discord for future \gls{astep} teams, with possible alternatives as Slack and Microsoft Teams.
+
+We would still strongly recommend physical meetings when possible, as that results in the fastest solutions and best learning experiences for us. 
+
+\subsection*{Servers and \gls{its}}
+The servers require some maintenance as they are quite low on some resources like disk space. We requested more resources to the server from \gls{its}. The request was however, denied.
+
+
+\subsection*{Resources}
+\gls{its}  opinion is that since some servers still have unused resources, we should use those first, which is fair but impractical. 
+It would require extensive symlinking/networking to utilize separate partitions or other servers, a better solution is to migrate the troubled workload to a bigger host, and let \gls{its} reclaim the smaller host, currently the \gls{kubernetes} nodes use symlink tricks to utilize attached storage volumes which is not ideal.
+For future \gls{astep} teams, we recommend telling \gls{its} that a bigger server is needed, do the migration and give the old (smaller) server back to \gls{its} as it seems simpler than explaining the true nature of the resource shortage, especially if the communication is conducted over email.
+
+\subsection*{Authentication}
+\gls{its} handles server credentials and we urge future \gls{astep} groups to hold on to as many credentials as possible and limit the reliance on \gls{its} which includes getting sudo rights to the servers to all the people that need it as early as possible, our group only got access after weeks of waiting, that slowed down debugging on docker related issues as we could not get the logs from the server.
+We suggest limiting the number of people with sudo rights to one person per group as more poses risks, but fewer significantly increase reliance on other groups when debugging \gls{docker} issues.
+
+\subsection*{Maintenance}
+\gls{its} performs rudimentary server maintenance and virus detection but nothing more. Cleaning, updating, and rebooting is the \gls{astep} team's responsibility. It is especially important to empty \gls{docker} container registries often as they use many resources. The server group created a CRON-job that runs every night because the server got filled quickly during peak deployment days. 

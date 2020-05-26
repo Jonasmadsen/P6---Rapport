@@ -1,0 +1,19 @@
+\section{Neural Networks}
+Neural networks are computational models comprised of neurons organized in layers. An advantage of neural networks is their ability to learn. The ability to learn means neural networks can handle complex tasks such as image recognition or anomaly detection. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Pictures/Sprint_2/Neuron_Structor.png}
+    \caption{The structure of a neuron.}
+    \label{fig:NeuronStructor}
+\end{figure}
+\noindent
+Neurons are mathematical models based on the neurons in the brains of animals and humans. Figure \ref{fig:NeuronStructor} shows the structure of an artificial neuron. The input $x$ of a neuron is the output of neurons from the previous layer or direct values from a dataset. The output of a neuron is calculated using the inputs and weights of all the neurons in the previous layer, a bias, and an activation function, through the following equation:
+
+\begin{equation}
+    y_k = \phi(\sum_{j=1}^{n} w_{kj} x_j b)
+\end{equation}
+
+Where $y_k$ is the output of the \textit{k}th neuron, $x_j$ is output of the \textit{j}th neuron in the previous layer, $w_{kj}$ the weight between the \textit{j}th neuron in the previous layer and the \textit{k}th neuron in this layer, $b$ is the bias and $\phi$ is the activation function. Many different activation functions exist for different purposes.
+
+Neural networks learn by training. Training of a neural network consists of giving the network of input data. For each input, the network provides an output. The training process then calculates a loss between the actual output and the expected output is given the input. Many different loss functions exist to provide different learned behavior. The training process uses the loss to update the weights between neurons in a process called backpropagation. The purpose of updating the neurons is to improve the model at its task.

@@ -1,0 +1,50 @@
+Supervisor meeting 4. May
+
+Attendies:
+
+Kristian V
+Kristian O
+Jonas
+Jeppe
+Rasmus
+
+Tung
+
+Location: Meeting was held on discord due to COVID 19.
+
+Kristian deler skærm. Tung says we must normalize. We say that we do that while training. Tung says we must do that while. We fix the x and y axis (normalize)
+
+The datasets are too small. Tung will give us tip so we dont spend many time oon training. Early stopping is a strategy we can use. See in chat.
+
+1. the loss value of current epoch - the loss value of previous epoch < epsilon ==> we break the training
+
+loss[t] - loss[t-1] < eps
+  break
+2. the loss value of current epoch does not change from 3 previous epochs ==> we break the training
+
+3. The mean of three loss values less than eps
+
+( loss[t] + loss[t-1] +  loss[t-2])/3 < eps
+  break
+  
+eps might be = 1e-7
+
+Our loss varies a lot shows chart.
+
+Tung says we can use variable learning rate. For each epoch we multiply the learning rate by 0.8.
+
+We can play around with it!
+
+If we make the demo paper we should put it in the report. It will be a benefit to the paper.
+
+Can we use multiple datasets. Concatination vs Batch training.
+Tung says both will work, and it will make model stronger, if we wanna make a translator from english to french we can put more stories into we must use something with the same distrobution. 
+Tungs tip for training with multiple datasets. We can cluster the data from 100 time series to five groups of simmerlar data then we can create 5 models.
+
+
+Should we justify the simplifications we make (like time pressure..)?
+We reffer to the KDD and we propose some similar model, so we use only the idea.
+
+We propose something to follow the stream of using variational ... bla bla... 
+
+We can write like that in the report but we cannot write like that in the report. We need to propose a new model. In the paper we need be careful.

@@ -1,0 +1,28 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def make_decoder(window_size, features, gru_dim, dense_dim):
+    input = keras.Input(shape=(window_size, features), name='decoder_input')
+    gru = keras.layers.GRU(gru_dim, return_sequences=True, name='decoder_gru')(input)
+    dense = keras.layers.Dense(dense_dim, name='decoder_dense', activation='relu')(gru)
+    z_mean = keras.layers.Dense(features, name='decoder_z_mean', activation='linear')(dense)
+    z_log_var = keras.layers.Dense(features, name='decoder_z_log_var', activation='softplus')(dense)
+    z_mean, z_log_var = KLDivergenceLayer()([z_mean, z_log_var])
+    xt_sample = keras.layers.Lambda(sampling, name='decoder_xt_sample')([z_mean, z_log_var])
+    output_layer = keras.layers.Activation('sigmoid', name='decoder_output')(xt_sample)
+
+    decoder = keras.Model(input, output_layer, name='decoder')
+    return decoder
+\end{minted}
+\caption{Decoder.}
+\label{lst:decoder}
+\end{listing}

@@ -1,0 +1,2 @@
+\subsection{Data Preprocessing}
+Figure \ref{fig:omni_structure} shows that data preprocessing is the first stage of the \gls{omnianomaly} model. Model Training and Online Detection both use the preprocessing module on input before processing the data. The preprocessing module utilizes ScikitLearn MinMaxScalar to standardize input. The scikitLearn MinMaxScalar is used at line 97\cite{PreProcessingSchilearn}. After standardization, the preprocessing module applies Sliding windows to segment the data into sequences.\cite{kdd}

@@ -1,0 +1,35 @@
+\chapter{Risk Item Checklist} \label{app:A}
+\bgroup 
+\def\arraystretch{2}
+\begin{table}[htbp]
+    \begin{tabular}{| m{45mm} | l | l | l | m{50mm} |}
+        \hline
+        \textbf{Risk} & \textbf{P(r)} & \textbf{L(r)} & \textbf{E(r)} & \textbf{Consequence} \\
+        \hline
+        Server goes down. & 0.15 & 8 & 1.2 & \makecell[l]{Reduced productivity. \\ Loss of control.} \\
+        \hline
+        Inter group disagreement. & 0.9 & 3 & 2.7 & More time used in meetings. Work stalled until agreement. \\
+        \hline
+        Project dependencies not delivered on time. & 0.05 & 3 & 0.15 & \makecell[l]{Work is stalled. \\ More collaboration required.} \\
+        \hline
+        Unrealistic project scope. & 0.3 & 20 & 6 & \makecell[l]{Increased workload. Project \\ may fail to meet requirements.} \\
+        \hline
+        \makecell[l]{Technical debt from \\ legacy code.} & 0.4 & 3 & 1.2 & Time spent improving legacy code. \\
+        \hline
+        \makecell[l]{Extended absence of \\ group members.} & 0.6 & 2 & 1.2 & Increased workload for rest of group. \\
+        \hline
+        \makecell[l]{Extended time spent on \\ research.} & 0.8 & 5 & 4 & More time used before developing anything. \\
+        \hline
+        \makecell[l]{Spend too much time on \\ minor details} & 0.3 & 2 & 0.6 & Leads to wasted time, with no value behind. \\
+        \hline
+        \makecell[l]{Lack of experience with \\ servers} & 0.6 & 1 & 1.2 & Reduced productivity. More research time needed. \\
+        \hline
+        \makecell[l]{Lack of experience with \\ machine intelligence.} & 0.5 & 3 & 1.5 & More research time needed. \\
+        \hline
+        \makecell[l]{Group members leaving \\ the project} & 0.5 & 3 & 1.5 & Increased workload for rest of group. \\
+        \hline
+    \end{tabular}
+    \caption{Unprioritized list of project risks.}
+    \label{tab:risk_analysis}
+\end{table}
+\egroup

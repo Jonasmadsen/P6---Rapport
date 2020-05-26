@@ -1,0 +1,28 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def to_tf_dataset(self, window_size, batch_size):
+    rv = np.zeros(shape=(len(self.graphs[0].data), len(self.graphs)))
+    for i, graph in enumerate(self.graphs):
+        for j, data_point in enumerate(graph.data):
+            rv[j][i] = data_point.y
+    rv = normalize(rv)
+    rv = make_windows(rv, window_size)
+    rv = tf.data.Dataset.from_tensor_slices((rv, rv))
+    rv = rv.batch(batch_size, drop_remainder=False)
+    return rv
+\end{minted}
+\caption{\texttt{to\_tf\_dataset} function in \texttt{Dataset} class.}
+\label{lst:to_tf_dataset}
+\end{listing}
+
+\noindent

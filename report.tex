@@ -1,0 +1,169 @@
+% Enable warnings on deprecated things.
+\RequirePackage[l2tabu, orthodox]{nag}
+
+\documentclass{scrreprt}
+
+% Load custom packages+settings and commands.
+%\usepackage{algorithm}
+\usepackage[algochapter,noline,linesnumbered]{algorithm2e}
+\DontPrintSemicolon
+\SetKwProg{Fn}{Function}{ is}{end}
+\SetKw{call}{call}
+\newcommand{\forcond}{$i=0$ \KwTo $n$}
+\SetKwFunction{Reach}{Reachability}%
+\usepackage{algorithmicx}
+\usepackage[noend]{algpseudocode}
+\usepackage{style_and_commands/style}
+\usepackage{color}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage[]{algorithm2e}
+\usepackage{pdflscape}
+\usepackage{tabularx}
+% \usepackage{lscape}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\input{style_and_commands/commands.tex}
+
+% Set custom settings
+  % Set true for PDF version ready for print. False for screen version.
+  %\settoggle{printversion}{false}
+  
+  %To be deleted before hand-in!!!
+  %\renewcommand{\includegraphics}[2][]{\rule{100pt}{70pt}}
+
+
+
+% Set custom settings
+  % Set true for PDF version ready for print. False for screen version.
+  %\settoggle{printversion}{false}
+  
+  %To be deleted before hand-in!!!
+  %\renewcommand{\includegraphics}[2][]{\rule{100pt}{70pt}}
+
+\begin{document}
+%\linenumbers
+
+%Fixes for allowing more relaxed restrictions.
+\footheight=20.4pt
+\hbadness=99999
+\tolerance=10000
+
+ %Cover page.
+\let\oldthepage\thepage{}
+\renewcommand\thepage{Cover}
+\bookmark[page=1,level=0]{Cover}
+\tikzexternaldisable{}
+%\includepdf[pages=-]{frontmatter/frontpage}
+\tikzexternalenable{}
+\renewcommand\thepage{\oldthepage}
+
+\input{frontmatter/frontpage.tex}
+
+\input{frontmatter/colophon.tex}
+
+% Start roman numbering.
+\cleardoublepage{}
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\bookmark[page=3,level=0]{Title Page}
+\input{frontmatter/titlepage.tex}
+\newpage\null\thispagestyle{blank}\newpage % Adds the (almost) blank page
+\begin{myenv}{1.5}
+\input{Report/summary}
+\end{myenv}
+
+\bookmark[page=7,level=0]{Preface}
+\input{frontmatter/preface.tex}\par
+\let\cleardoublepage\relax
+\cleardoublepage{}
+\begingroup % Next chapter on same page.
+\let\cleardoublepage\relax
+\bookmark[page=9,level=0]{Reading Guide}
+%\input{frontmatter/reading_guide.tex}
+\newpage\newpage % Adds the (almost) blank page
+\endgroup
+
+
+% Table of contents.
+\bookmark[page=9,level=0]{Contents}
+\microtypesetup{protrusion=false} % Protrusion may interfere with the dotted lines in the TOC.
+\ohead{{\MakeUppercase\leftmark}} % UGLY HACK. The correct way should be to store the old value, set new value, then restore old value!
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\cleardoublepage{}
+\printglossaries
+\microtypesetup{protrusion=true}
+
+
+%\cleardoublepage
+%\ohead{{\MakeUppercase\leftmark}} % UGLY HACK. The correct way should be to store the old value, set new value, then restore old value!
+%\phantomsection\addcontentsline{toc}{chapter}{List of Figures}%
+%\listoffigures
+%\begingroup % Next chapter on same page.
+%\let\cleardoublepage\relax
+%\phantomsection\addcontentsline{toc}{chapter}{List of Tables}%
+%\listoftables
+%\clearpage{}
+%\endgroup
+
+% Start arabic numbering and restore page header.
+\cleardoublepage{}
+
+%\setcounter{page}{1}
+
+%\newpage
+% Main content.
+%\setcounter{tocdepth}{1}
+%\listoffixmes %%!!! Delete me by the end of the report!!!!!!
+
+\newpage
+\phantomsection
+\ohead{{\MakeUppercase\leftmark}\rightmark}
+\pagenumbering{arabic}
+\newpage
+\begin{myenv}{1.5}
+\input{Report/Introduction/introduction.tex}
+\phantomsection
+\newpage
+\input{Report/Sprint_1/sprint_1.tex}
+\phantomsection
+\newpage
+\input{Report/Sprint_2/sprint_2.tex}
+\phantomsection
+\newpage
+\input{Report/Sprint_3/sprint_3.tex}
+\phantomsection
+\newpage
+\input{Report/Sprint_4/sprint_4.tex}
+\phantomsection
+\newpage
+\input{Report/Collaboration/collaboration}
+\phantomsection
+\newpage
+\input{Report/Reflection/reflection}
+
+\label{LastPageLabel}
+
+% To end the parts.
+\bookmarksetup{startatroot}
+\addtocontents{toc}{\bigskip}
+
+% Bibliography.
+\clearpage
+\cleardoublepage
+\phantomsection\addcontentsline{toc}{chapter}{Bibliography}
+\label{bibliography}
+\renewcommand\bibname{Bibliography}
+\printbibliography{}
+\clearpage{}
+\ohead{{\MakeUppercase\leftmark}\rightmark}
+
+% Appendix
+\begin{appendices}
+\phantomsection
+\input{Report/Appendix/appendix.tex}
+\end{appendices}
+
+\end{myenv}
+\end{document}

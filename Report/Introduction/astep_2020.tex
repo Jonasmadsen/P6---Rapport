@@ -1,0 +1,75 @@
+\section{Contribution to aSTEP-2020}
+This project consists of four sprints. Each sprint has a specific focus.
+Table \ref{tab:sprints} shows when the sprints start and end. Sprint one focuses on gaining an understanding of the current codebase of \gls{astep}. Sprint two and three focuses on designing and implementing improvements for \gls{astep}. Sprint four focuses on testing and evaluation of the implemented improvements.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        Sprint num. & Start date & End date \\ \hline
+        Sprint 1    & February 3 & March 2  \\ \hline
+        Sprint 2    & March 3    & March 30 \\ \hline
+        Sprint 3    & March 31   & May 4    \\ \hline
+        Sprint 4    & May 5      & May 22   \\ \hline
+    \end{tabular}
+    \caption{Sprints}
+    \label{tab:sprints}
+\end{table}
+\egroup
+
+\noindent
+For aSTEP-2020, we develop an analytics algorithm and visualize the output of the algorithm. Specifically, we develop an anomaly detection model for multivariate time series data using deep learning. 
+
+\paragraph{Definition}
+Time series data is a series of data points indexed in chronological order in time. In a multivariate time series dataset, each data point contains multiple variables. Each variable value depends on its past values, but it may also depend on other variables in the dataset. We define an anomaly in time series data as a data point whose values deviate from expected values and, therefore, erroneous\cite{kdd}.
+
+\paragraph{Motivation}
+Anomaly detection has applications in many different areas like server machines, spacecrafts, and engines. Detecting anomalies is crucial for service and quality management.\cite{kdd}
+
+
+
+\section{Organisation}
+In total, there are six groups assigned to the \gls{astep}-2020 project. They are all part of the \gls{astep}-2020 committee. Each group is also assigned to either the Time Series or Routing subgroup, as shown in Table \ref{tab:org}.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \multicolumn{2}{|c|}{astep-2020 committee} \\ \hline
+        Time Series           & Routing            \\ \hline
+        SW604F20              & SW601F20           \\ \hline
+        SW602F20              & SW605F20           \\ \hline
+        SW603F20              & SW606F20           \\ \hline
+        \multicolumn{2}{|c|}{Server group}         \\ \hline
+    \end{tabular}
+    \caption{The groups that are part of \gls{astep}-2020.}
+    \label{tab:org}
+\end{table}
+\egroup
+
+\noindent
+Besides these groups, there is an official server group consisting of one person from each of the groups from Table \ref{tab:org} as well as a member from \gls{astep}-2019 to help get it started.
+
+\subsection{Communication}
+The committee has weekly meetings and the sub-groups have meetings when required.
+The communication is split between multiple platforms:
+\begin{itemize}
+    \item \Gls{gitlab}
+    \item Discord
+    \item Email
+    \item Physical meetings
+\end{itemize}
+\noindent
+The different platforms each have their own use cases.
+
+Even though GitLab is primarily a development platform, it has communication functionality that is used in this project, as well. Specifically merge requests are used as a way to peer review code that will be deployed to production servers.\cite{gitlab}
+
+Discord is a free platform used for voice, text, and video chat \cite{discord}. In this project, Discord is primarily used for quick and informal inter-group communication.
+
+Emails are reserved for formal communication, between the semester committee and the semester coordinator.
+
+Physical meetings (before COVID-19 lockdown) are held every week with the semester committee, to discuss progress, goals and obstacles.

@@ -1,0 +1,30 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def make_encoder(batch_size, window_size, features, gru_dim, dense_dim):
+    input = keras.Input(shape=(window_size, features), name='encoder_input')
+    gru = keras.layers.GRU(gru_dim, return_sequences=True, name='encoder_gru')(input)
+    dense = keras.layers.Dense(dense_dim, name='encoder_dense', activation='relu')(gru)
+    z_mean = keras.layers.Dense(features, name='encoder_z_mean', activation='linear')(dense)
+    z_log_var = keras.layers.Dense(features, name='encoder_z_log_var', activation='softplus')(dense)
+    z_mean, z_log_var = KLDivergenceLayer()([z_mean, z_log_var])
+    z_sample = keras.layers.Lambda(sampling, name='encoder_z_sample',
+                                   output_shape=(None, window_size, features))([z_mean, z_log_var])
+
+    encoder = keras.Model(input, z_sample, name='encoder')
+    return encoder, input
+\end{minted}
+\caption{Encoder.}
+\label{lst:encoder}
+\end{listing}
+
+\noindent

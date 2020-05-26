@@ -1,0 +1,16 @@
+\chapter*{Resmué}
+Dette projekt er en del af multi-projektet, aSTEP-2020 (aau's Spatio-TEmporal data analytics Platform). aSTEP er en platform, der bliver trinvis forfinet hvert år af cirka 30-40 software studerende, som led i deres bachelorprojekt. 
+Denne gruppes primære bidrag er en microservice, der benytter et neuralt netværk, til at finde anomale tidspunkter i tidsseriedata. Det neurale netværk består i grove træk af en RVAE (Recurrent Variational AutoEncoder), der er blevet trænet offline på forskellige datasæt. Der understøttes både multivariat-og-univariat datasæt, samt muligheden for at træne sin egen model. Praktiske applikationer inkluderer alt fra server monitorering til bakterielle udviklinger i rensningsanlæg. Dette projekt har dog kun beskæftiget sig med at lave en generel service, til brug af andre forskere og studerende i deres respektive projekter. 
+
+Projektet har været inddelt i 4 sprints af en måneds varighed, med møder hver uge. I de ugentlige møder har grupperne hjulpet hinanden med vejledninger og forslag til forbedringer. Her er der også blevet koordineret en række forbedringer til aSTEP platformen, som fx. bedre dokumentation og inter-service kommunikation.
+
+I det første sprint blev den eksisterende kodebase undersøgt for at se, hvad der kunne genbruges og hvad der skulle laves om. Der blev også holdt møder med en kontaktperson fra aSTEP-2019, for at sikre en fornuftig overdragelse af aSTEP platformen. Der blev lavet en RMMM plan og andre projekt-opstarts aktiviteter. Vi fandt, at aSTEP-platformens interface var intuitivt og at de grundlæggende services kørte stabilt. Det største problem var, at dokumentationen ikke var ensartet eller konsistent.
+ 
+I andet sprint undersøgte vi domænet for neurale netværk og hvilke løsninger der anvendes i dag til at finde anomale tidspunkter i tidsseriedata. Vi påbegyndte designet af vores service og neural netværk, og vi undersøgte de forskellige teknologier og relevante forskningsområder. Vi fandt bl.a. at Python, Flask og TensorFlow skulle være vores hoved frameworks, og at det neurale netværk skulle være typen RVAE.
+
+I det tredje sprint færdiggjorde vi designet af vores service og begyndte implementeringen. Det neurale netværk blev forbundet, så man kunne bruge det igennem aSTEP interfacet. Det neurale netværk blev trænet på en række datasæt, for at have nogle forhånds-trænede modeller klar og for at kunne sammenligne vores modeller med eksisterende modeller.
+
+I det fjerde sprint blev systemet testet for fejl og mangler med unittest. Modellerne blev testet på flere forskellige parametre ved brug af datasæt med labels. Resultaterne sammenlignes med resultater opnået ved brug af andre anomaly detekterings metoder. Disse resultater behandles og diskuteres. Servicen testes i sammenhæng med resten af aSTEP-platformen, for at sikre inter-service kompatibilitet.
+
+Løbene, og særligt sidst i projektet, er der blevet skrevet dokumentation omkring servicen og modellen for at øge den fremtidige anvendelighed og genbrugelighed af kodebasen.
+

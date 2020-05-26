@@ -1,0 +1,31 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+
+FIELD_SET_FACTORY = afu.field_set_factory(
+    afu.EnumField("Dataset", dataset_enum, label="Pick an Example dataset instead?")
+)
+
+@service.route('/fields')
+def fields():
+    return fields_endpoint(FIELD_SET_FACTORY)
+
+
+@service.route('/render', methods=['GET', 'POST'])
+def render():
+    return render_endpoint(request, FIELD_SET_FACTORY)
+\end{minted}
+\caption{Render and fields endpoint using astep-form-utils}
+\label{lst:endpoints}
+\end{listing}
+
+\noindent

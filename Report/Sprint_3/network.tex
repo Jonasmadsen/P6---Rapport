@@ -1,0 +1,221 @@
+\section{Network Implementation}
+In this section we describe the implementation of the \gls{nn}.
+
+We start the implementation of the \gls{nn} by developing the preprocessing needed to use the data for training and predicting. The model is designed to work on multivariate data, but to make sure the architecture and model works, we first train it on univariate data.
+
+
+
+\subsection{Data Preprocessing}
+The data preprocessing is the first stage of the network. Both the training and prediction modules use the preprocessing module on the input before training or predicting data. To load the data and transform it into an object \gls{tensorflow} can use, we create a dataset class. The Dataset class can load data from CSV files and \gls{tensorflow} datasets, and transform the data to several other outputs, like \gls{tensorflow} dataset, matplotlib plots, and to charts used for the time series interface on \gls{astep}. Listing \ref{lst:to_tf_dataset} shows how the data is transformed to a \gls{tensorflow} dataset. When the data is transformed into a \gls{tensorflow} dataset, we normalize the data and apply \gls{slwi}. We normalize the data, and we apply \gls{slwi} to segment the data into sequences. Listing \ref{lst:normalize} shows how the normalization is done, and Listing \ref{lst:make_windows} shows how \gls{slwi} is applied.
+
+\input{Report/Sprint_3/Code/to_tf_dataset}
+
+\input{Report/Sprint_3/Code/normalize}
+
+\input{Report/Sprint_3/Code/make_windows}
+
+
+\subsection{Implementation of The Network}
+We implement the network in \gls{tensorflow} using \gls{keras}. The first part of implementing the network is to define the sizes of the layers and the input shape. As we want the same dimensions for both the encoder and the decoder, this makes it easier to change the dimensions of the GRU and dense layers. Listing \ref{lst:network_parameters} shows the parameters of the network, including sizes of the layers and window size. These parameters will be tuned in future testing to find optimal values.
+
+\input{Report/Sprint_3/Code/network_parameters}
+The second part of implementing the network is to implement the encoder. The input layer is the first layer of the encoder. Which is the layer all the windows will be fed to, in order to get the right shape for the input to the GRU layer. When the input layer is defined, we feed the input through the rest of the encoder. Listing \ref{lst:encoder} shows the implementation of the encoder.
+
+\input{Report/Sprint_3/Code/encoder}
+After the input layer, the data is fed through the GRU and Dense layers. After the dense layer, are the \texttt{z\_mean} and \texttt{z\_log\_var} latent vectors, implemented as dense layers. The \texttt{z\_mean} and \texttt{z\_log\_var} is the input to a \gls{kldiv} layer. The \gls{kldiv} layer is a passthrough layer that simply outputs its input, but adds a loss to the model, computed as the \gls{kldiv} between the distribution formed by the \texttt{z\_mean} and \texttt{z\_log\_var} latent vectors and a unit Gaussian distribution. Refer to equation X. Listing \ref{lst:kld_layer} shows the implementation of our \gls{kldiv} layer.
+
+\input{Report/Sprint_3/Code/kl_divergence}
+The the \texttt{z\_mean} and \texttt{z\_log\_var} returned from the \gls{kldiv} layer are then used to sample. This is done using the \texttt{Lambda} layer from \gls{keras}, which applies the sampling function the inputs. The sampling function is based on the sampling using the reparameterization-technique (See equation \ref{eq:reparameterization}). Listing \ref{lst:sampling} shows our sampling function.
+
+\input{Report/Sprint_3/Code/sampling}
+The encoder is then instantiated with the input layer as input, and \texttt{z\_sample} as output. \newline
+
+\noindent
+The decoder is very similar to the encoder, the only exception being the output layer, which in the case of the decoder, is an Activation Layer, which applies an activation function to the output. Listing \ref{lst:decoder} shows the decoder.
+
+\input{Report/Sprint_3/Code/decoder}
+\noindent
+When the encoder and decoder are defined, the two can be put together and the model completed. In \gls{keras} this is done by defining the input and output of the model. As the encoder and decoder are networks by themselves, they have inputs and outputs themselves. Listing \ref{lst:model} shows how the encoder and decoder is put together. The input of the encoder is the input layer defined in the encoder. The input of the decoder is what the encoder outputs. Line 4 in Listing \ref{lst:model} shows that the output of the decoder is what the decoder returns with the encoder as input. The model is then defined by having the input of the encoder as input and the output of the decoder as output.
+
+\input{Report/Sprint_3/Code/model}
+
+\section{Network Training}
+
+\subsection{Dataset For The Network}
+Yahoo has a collection of datasets \cite{yahoo_datasets}. One of these datasets (S3) is a collection of time-series data with varying amounts of anomalies. This dataset was created by Yahoo to benchmark anomaly detection algorithms. The dataset has both synthetic and real data. The synthetic data has a changing trend, noise, and seasonality, while the real data is data collected by Yahoo from various Yahoo services. All the data from the S3 dataset is univariate data.
+
+For multivariate data, we use an Electrocardiography (ECG) dataset. The ECG dataset consists of seven 2-dimensional time series, each with 3700 to 5400 observations.
+
+The S3 and ECG datasets are relatively small, compared to many datasets used for deep learning. The largest dataset is less than 200 kilobytes. Training the model on these datasets may require training the model for many epochs to achieve good results.
+
+\subsection{Early stopping}
+To avoid excessive training times, we utilize a form of early stopping to stop training after several epochs have passed without a decrease in loss. Early stopping is implemented to avoid overfitting issues. However, in our case, we use it to stop training when the model is no longer able to learn from the input.
+\\\\
+Early stopping has two parameters, patience, and epsilon. Epsilon refers to how much a loss value should change before the early stopping algorithm considers it a decrease. Patience refers to how long the early stopping algorithm will wait for a decrease in a loss that is higher than epsilon before stopping.
+
+We tune the parameters often to achieve the desired result.
+
+\subsection{Learning rate schedule}
+We also implement a learning rate schedule that decreases the learning rate while training. Since our model is stochastic, loss values tend to be very noisy when training, jumping up and down randomly, because the model's output has some randomness associated with it. A learning rate decay helps to avoid this problem by continuously decreasing the learning rate after some number of epochs.
+\\\\
+Our learning rate schedule comes with two parameters, decay rate, and decay frequency. The decay rate is a factor that will be multiplied with the current learning rate at given epochs, to give the new learning rate. Thus, for a 20\% decrease in the learning rate, the decay rate should be set to $0.8$. Decay frequency refers to how often the factor should be applied to the learning rate. For example, a frequency of 10 means that the factor will be applied to the learning rate, every ten epochs.
+
+\subsection{Hyperparameter tuning}
+To determine the best hyperparameters for our model, we train models on different batch sizes and window sizes to determine which yields the best results. We test all hyperparameters on 1 of the real-world univariate datasets, 1 of the synthetic datasets, and 1 of the real-world multivariate datasets, chosen randomly. Furthermore, since our model is stochastic, results may vary between each training and each prediction, so we train five models for each metric on each dataset, and test each trained model five times on the train on the dataset, and use the mean of the results. Results are organized in Tables like in Table \ref{tab:example_results}. A full list of all the hyperparameters used during these experiments can be found in Appendix \ref{app:experiments}.
+
+\bgroup
+\def\arraystretch{1.5}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+        & \multicolumn{3}{c|}{Variable} \\ \hline
+Dataset & F1-score & Precision & Recall \\ \hline
+\end{tabular}
+\caption{Example of how results are shown in a table.}
+\label{tab:example_results}
+\end{table}
+\egroup
+
+\subsubsection{Batch Size}
+For batch sizes, we test 6 different batch sizes. The results can be seen in Tables \ref{tab:bs_16}, \ref{tab:bs_128} and \ref{tab:bs_512}. The tables show each \gls{f1score}, \gls{precision} and \gls{recall} for each batch size on each dataset, and the mean for all datasets for a batch size. Looking at this data, we find that a batch size of 256 is optimal for training our model, yielding a mean \gls{f1score} of 0.80. Furthermore, larger batch sizes, also have the added benefit of decreasing training time, with a significant difference between the larger and smaller batch sizes. However, since training times are generally low for our model on the specified datasets, we have not measured training time as a metric.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Batch Size              & \multicolumn{3}{c|}{4} & \multicolumn{3}{c|}{8} & \multicolumn{3}{c|}{16} \\ \hline
+Real Uni      & 0.24   & 0.16  & 0.17  & 0.50   & 0.60  & 0.42  & 1      & 1      & 1     \\ \hline
+Synthetic Uni & 0      & 0     & 0     & 0      & 0     & 0     & 0.05   & 0.03   & 0.25  \\ \hline
+Real Multi    & 0.09   & 0.07  & 0.11  & 0.07  & 0.05 & 0.08 & 0.13   & 0.10   & 0.16  \\ \hline
+Mean          & 0.11   & 0.08  & 0.18  & 0.19   & 0.21  & 0.17  & 0.39   & 0.38   & 0.47  \\ \hline
+\end{tabular}
+\caption{Results for batch sizes 4, 8 and 16.}
+\label{tab:bs_16}
+\end{table}
+\egroup
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Batch Size              & \multicolumn{3}{c|}{32} & \multicolumn{3}{c|}{64} & \multicolumn{3}{c|}{128} \\ \hline
+Real Uni      & 0.6    & 1      & 0.75  & 0.57   & 0.57   & 0.57  & 0.92   & 1      & 0.85   \\ \hline
+Synthetic Uni & 0.19   & 0.11   & 0.75  & 0.72   & 0.57   & 1     & 0.88   & 0.80   & 1      \\ \hline
+Real Multi    & 0.15   & 0.13   & 0.18  & 0.23   & 0.22   & 0.24  & 0.26   & 0.26   & 0.26   \\ \hline
+Mean          & 0.31   & 0.41   & 0.45  & 0.51   & 0.45   & 0.60  & 0.69   & 0.68   & 0.70   \\ \hline
+\end{tabular}
+\caption{Results for batch sizes 32, 64 and 128.}
+\label{tab:bs_128}
+\end{table}
+\egroup
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Dataset/Batch Size & \multicolumn{3}{c|}{256} & \multicolumn{3}{c|}{512} \\ \hline
+Real Uni           & 1      & 1      & 1      & 0.93   & 0.87   & 1      \\ \hline
+Synthetic Uni      & 1      & 1      & 1      & 0.50   & 0.33   & 1      \\ \hline
+Real Multi         & 0.40   & 0.64   & 0.29   & 0.42   & 0.64   & 0.29   \\ \hline
+Mean               & 0.80   & 0.88   & 0.76   & 0.61   & 0.59   & 0.77   \\ \hline
+\end{tabular}
+\caption{Results for batch sizes 256 and 512.}
+\label{tab:bs_512}
+\end{table}
+\egroup
+
+\subsubsection{Window Size}
+For window sizes, we test 6 different window sizes on the same datasets. The results can be seen in Table \ref{tab:ws_16} and \ref{tab:ws_128}. From these results we find that a window size of 64 is optimal for our model, yielding a mean \gls{f1score} of 0.76.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Window Size              & \multicolumn{3}{c|}{4} & \multicolumn{3}{c|}{8} & \multicolumn{3}{c|}{16} \\ \hline
+Real Uni      & 1      & 1     & 1     & 1      & 1     & 1     & 1      & 1      & 1     \\ \hline
+Synthetic Uni & 0.11   & 0.06  & 0.50  & 0.13   & 0.08  & 0.50  & 0.57   & 0.40   & 1     \\ \hline
+Real Multi    & 0.21   & 0.20  & 0.23  & 0.26   & 0.26  & 0.26  & 0.27   & 0.26   & 0.28  \\ \hline
+Mean          & 0.44   & 0.42  & 0.57  & 0.46   & 0.44  & 0.58  & 0.61   & 0.55   & 0.76  \\ \hline
+\end{tabular}
+\caption{Results for window sizes 4, 8 and 16.}
+\label{tab:ws_16}
+\end{table}
+\egroup
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Window Size & \multicolumn{3}{c|}{32} & \multicolumn{3}{c|}{64} & \multicolumn{3}{c|}{128} \\ \hline
+Real Uni      & 0.66   & 0.80   & 0.57  & 1      & 1      & 1     & 1      & 1      & 1      \\ \hline
+Synthetic Uni & 1      & 1      & 1     & 1      & 1      & 1     & 0.88   & 0.8    & 1      \\ \hline
+Real Multi    & 0.29   & 0.33   & 0.26  & 0.30   & 0.48   & 0.21  & 0.27   & 0.51   & 0.18   \\ \hline
+Mean          & 0.65   & 0.71   & 0.61  & 0.76   & 0.82   & 0.73  & 0.72   & 0.77   & 0.72   \\ \hline
+\end{tabular}
+\caption{Results for window sizes 32, 64 and 128.}
+\label{tab:ws_128}
+\end{table}
+\egroup
+
+\subsubsection{\gls{kldiv}}
+From our experiments with our model, we discover that our implementation of \gls{kldiv} has some problems.
+It seems that our implementation weighs \gls{kldiv} too high, compared to our binary cross-entropy loss, which results in model outputs turning into, what is essentially, random noise. The exact reason why our implementation does not work is unclear, but from experimentation, we find that multiplying the \gls{kldiv}-loss with some factor, reduces the noise level. With some factors, noise is reduced to a point where the model is again able to recreate the input correctly. However, when the factor is low, the model will also recreate anomalies, because of the problem with hardcoding distributions (as previously described in Section \ref{sc:vae}), essentially turning it into an Autoencoder instead of a \gls{vae}. To find the best factor for our model, we test 6 different factors of \gls{kldiv}, as well as with \gls{kldiv} turned off completely. The results can be seen in Table \ref{tab:kl_001} and \ref{tab:kl_no}. It should be noted that tests have been conducted with \gls{kldiv} factor higher than 0.2, but these results have all been equally poor. From these results, we can gather that a \gls{kldiv} factor of 0.001 is optimal for our model, yielding a mean \gls{f1score} of 0.82.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Factor & \multicolumn{3}{c|}{0.2} & \multicolumn{3}{c|}{0.1} & \multicolumn{3}{c|}{0.01} \\ \hline
+Real Uni       & 0.72   & 1      & 0.57   & 0.83   & 1      & 0.71   & 1       & 1      & 1      \\ \hline
+Synthetic Uni  & 0.33   & 0.20   & 1      & 0.4    & 0.25   & 1      & 0.88    & 0.80   & 1      \\ \hline
+Real Multi     & 0.27   & 0.23   & 0.33   & 0.25   & 0.20   & 0.34   & 0.34    & 0.29   & 0.40   \\ \hline
+Mean           & 0.44   & 0.47   & 0.63   & 0.49   & 0.48   & 0.68   & 0.74    & 0.69   & 0.80   \\ \hline
+\end{tabular}
+\caption{Results for KL-divergence factors of 0.2, 0.2 and 0.01.}
+\label{tab:kl_001}
+\end{table}
+\egroup
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Dataset/Factor & \multicolumn{3}{c|}{0.001} & \multicolumn{3}{c|}{0.0005} & \multicolumn{3}{c|}{No KL} \\ \hline
+Real Uni       & 1       & 1       & 1      & 1       & 1       & 1       & 1       & 1       & 1      \\ \hline
+Synthetic Uni  & 1       & 1       & 1      & 1       & 1       & 1       & 0.80    & 0.66    & 1      \\ \hline
+Real Multi     & 0.45    & 0.67    & 0.34   & 0.28    & 0.37    & 0.23    & 0.31    & 0.60    & 0.21   \\ \hline
+Mean           & 0.82    & 0.89    & 0.78   & 0.76    & 0.79    & 0.74    & 0.70    & 0.75    & 0.73   \\ \hline
+\end{tabular}
+\caption{Results for KL-divergence factors 0.001, 0.0005 and with KL-divergence completely off.}
+\label{tab:kl_no}
+\end{table}
+\egroup
+
+
+% The time series synthetic\_85 and chfdb\_chf01\_275 will be used for training only, and then other time series with the same trend in the data will be used for validating the models.
+
+% As we only use two time series to train two models, we can load the entire time series into the RAM, as the synthetic\_85.csv file has a size of less than 50 kilobytes, and the chfdb\_chf01\_275.csv file has a size of less than 100 kilobytes. Because of the data having such a small size, we may need to train the network for a long time. \newline
+
+% \noindent
+% We load the data from the time series using our dataset class and transform it into a \gls{tensorflow} dataset. The model is then compiled with the network parameters shown in Listing \ref{lst:network_parameters}. We then train the model for 2500 epochs. We train for this amount of epochs because with a window size of 64 we only get 1358 windows. This is not a lot of windows for training, and we need to go through the data many times for the model to learn the data and get a better result when reconstructing the time series. \newline
+
+% \noindent
+% After each epoch a checkpoint and the loss is saved. This checkpoint is an intermediate model, which works as a final model, had it stopped at that epoch. The loss is used to plot the development of the loss through the training.
+
+% For some deep learning, it is desired to shuffle the data, as the input doesn't have anything to do with each other, and the model may get better accuracy, but as we have a time series, and the data would be altered if it is shuffled, we do not shuffle the data.
+

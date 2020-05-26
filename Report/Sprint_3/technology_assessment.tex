@@ -1,0 +1,32 @@
+\section{Technology Assessment} \label{sc:technology_assessment}
+In this section, we explore the technologies available for both machine learning and serving web pages.
+
+\subsection{Machine Learning Framework}
+We use a framework instead of implementing the \gls{nn} from scratch, as it will save us time, and abstract away details. The implementation details of the network will depend on which framework we choose, as not all frameworks provide the same level of abstraction.
+
+The \gls{astep} server uses a \gls{kubernetes} cluster to handle the services, and as such, the language and framework can be any that can run in a docker container. Containers increase the options, but we will only explore a small subset of possible combinations.
+
+\subsubsection*{TensorFlow}
+\gls{tensorflow} is an open-source platform for machine learning developed by Google, who uses it for research and production of machine learning applications \cite{GoogleTensorflowOpenSourced}. \Gls{tensorflow} allows researchers to abstract away lower-level software engineering and focus on their models. A comprehensive set of tools and libraries enable \gls{tensorflow} to obtain this abstraction \cite{TensorFlow}. 
+
+One of the tools \gls{tensorflow} supports to abstract away details is \gls{keras}. \Gls{keras} is an open-source API capable of running on top of \gls{tensorflow}. By being modular, composable, and extendable, \gls{keras} supports abstraction away from low-level software engineering concerns. A \gls{keras} model is composed of modules such as layers. Researchers and developers can make custom modules and thereby extend \gls{keras} to support new ideas \cite{Keras}.
+
+\subsubsection*{PyTorch}
+\Gls{pytorch} is an open-source python wrapper for Torch, a scientific computing framework, developed by Facebook AI research team. \Gls{pytorch} provides GPU-acceleration for the training of neural networks and multi-processing with shared memory. \gls{pytorch} can also be used to complement or replace functions in existing packages such as NumPy by providing GPU-acceleration for tensor computation \cite{PyTorch2}.
+
+\subsubsection*{Deeplearning4j}
+\gls{dl4j} is an open-source machine learning framework for the JVM \cite{dl4j}. Since \gls{dl4j} is for the JVM, it can use Java, Scala, Clojure, and Kotlin, while \gls{tensorflow} and \gls{pytorch} are mainly focused on Python. \gls{dl4j} supports distributing training workloads over multiple clients with Hadoop and Spark.
+
+\subsubsection*{Subconclusion}
+We choose to use \gls{tensorflow} as our machine learning framework, since \gls{tensorflow} is a framework that we have worked with in previous projects, and the extra features from other frameworks are not needed. Furthermore, to abstract away low-level software engineering concerns, \gls{tensorflow} supports \gls{keras}. \gls{keras} allows us to entirely focus on the model, without concern about minor technicalities. We assess that the combination of \gls{tensorflow} and \gls{keras} fits our purpose of using the best.
+
+\subsection{Web Framework}
+We will use the web framework to implement the \glspl{endpoint} for the interfaces we chose in the design section, advanced features and scalability is not needed.
+\subsubsection*{Flask}
+Flask is a microframework for web applications. Flask focuses on a simple core structure but still supports extensions. Extensions enable Flask to handle database integration, form validation, upload handling,  authentication, and more. The simple core structure and extendability make Flask able to accommodate many different preferences and requirements. The core of Flask depends on a few libraries, mainly Werkzeug to implement WSGI and Jinja2 to handle templating \cite{DesignFlask, DependenciesFlask}.
+
+\subsubsection*{Django}
+Django is a high-level web framework. Django focuses on fast development, security, and scalability. Django takes care of a lot of the work from web development to give faster development and security, by having security included in functions to avoid common security mistakes. Django also includes features like user authentication, content administration, site maps, RSS feeds.
+
+\subsubsection*{Subconclusion}
+As we only need the ability to expose the service to some endpoints, the extra features included in Django are not needed. We also have previous experience working with Flask. We will, therefore, use Flask as a framework to incorporate the \gls{nn} into \gls{astep}.

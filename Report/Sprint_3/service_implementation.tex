@@ -1,0 +1,9 @@
+\section{Service Implementation}
+
+We use a package called astep-form-utils created by the \gls{astep}-2019 team. The purpose of the package is to reduce duplicate code when creating endpoints. In listing \ref{lst:endpoints} on line 1, we configure a field\_set\_factory and pass it to both the render and the fields functions.
+
+\input{Report/Sprint_3/Code/endpoints}
+\noindent
+We use astep-from-utils to check the request for empty or invalid data, instead of manually going through the request object. We use the included functions called is\_data\_empty and is\_valid, as can be seen on Listing \ref{lst:renderendpoint} lines 1 and 4, respectively. This package allows us to focus our effort on more important implementation details and still have a robust interface to other services and users.
+
+\input{Report/Sprint_3/Code/renderendpoint}

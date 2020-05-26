@@ -1,0 +1,248 @@
+% Project related.
+  % Project information.
+  \newcommand{\projecttitle}{ANOM: A(nother) step forward for aSTEP}
+  \newcommand{\projectsubtitle}{Anomaly detection with a Neural network On Multivariate time series data}
+ 
+  \newcommand{\projecttheme}{Developing Complex Software Systems}
+  \newcommand{\projekttema}{Indlejret Systemer}
+  \newcommand{\projectperiod}{Spring semester 2020}
+  \newcommand{\projektperiode}{Efterårssemester 2019}
+  %\newcommand{\projectcopies}{}
+  \newcommand{\projectcompletion}{May 28th 2020}
+  \newcommand{\projektaflevering}{19. december 2019}
+
+  % Names.
+  \newcommand{\groupname}{SW604F20}
+  \newcommand{\supervisor}{Tung Kieu}
+  \newcommand{\groupmembersbyfirstname}[0]{%
+    Jeppe Andreas Arnfelt \newline
+    Jonas Madsen \newline
+    Kristian Otte \newline
+    Kristian Simoni Vestermark \newline
+    Rasmus Møller Jensen \newline
+  }
+
+% Custom styling commands.
+  % Monospaced text.
+  \newcommand*\justify{%
+    \fontdimen2\font=0.4em% interword space
+    \fontdimen3\font=0.2em% interword stretch
+    \fontdimen4\font=0.1em% interword shrink
+    \fontdimen7\font=0.1em% extra space
+    \hyphenchar\font=`\-% allowing hyphenation
+  }
+  \newcommand{\mono}[1]{\texttt{\justify {#1}}}
+
+  % Code mono
+  \newcommand{\code}[1]{\sethlcolor{clcodeshade}\hl{\texttt{\justify{#1}}}} % Yes, this line is identical to the one in \mono, however the soul-package is fragile, and cannot see into another command.
+  \soulregister{\justify}{1}
+
+  % Chapter introductions.
+  \newcommand{\chapterintro}[1]{#1}
+
+  % CD paths with icon.
+  %\newcommand{\cdpath}[1]{%
+  %  % Param1: path
+  %  \hyperref[app:cd]{\raisebox{-0.28ex}{\includegraphics[height=0.85em]{cd}}\mono{/#1}}%
+  %}
+
+  % Margin text.
+  \newcommand{\margintext}[1]{\marginline{\textsf{\footnotesize #1}}}
+
+  % Todo.
+  \newcommand{\todo}[1]{\fxnote{#1}}
+
+  % Dummy line.
+  \newcommand{\dummy}{\usnote{Write an abstract here}}
+
+% Document structure.
+  % Sprints.
+
+  % Document organization.
+  \newenvironment{documentorganization}
+    {\vspace{.5cm}\noindent\textbf{Report Organization}\quad The remainder of this report is organized in the following fashion:\begin{itemize}}
+    {\end{itemize}}
+
+  % Chapter organization.
+  \newenvironment{chapterorganization}
+    {\vspace{.5cm}\noindent\textbf{Chapter Organization}\quad This chapter is organized in the following fashion:\begin{itemize}}
+    {\end{itemize}}
+
+   % Abbreviation.
+  \newenvironment{abbreviations}
+    {\vspace{.5cm}\noindent\textbf{Chapter Abbreviations}\quad This chapter introduces the following abbreviations:\begin{addmargin}[\leftmargin]{0em}\begin{multicols}{2}\begin{description}[noitemsep, style=sameline]}
+    {\end{description}\end{multicols}\end{addmargin}}
+
+    % Dates.
+    %\newenvironment{dates}
+    %{\vspace{.5cm}\noindent\textbf{Project Dates}\quad \dummy:\begin{addmargin}[\leftmargin]{0em}\begin{multicols}{2}\begin{description}[noitemsep, style=sameline]}
+    %{\end{description}\end{multicols}\end{addmargin}}
+
+% Figures.
+  % Normal figure.
+  \newcommand{\fig}[3]{
+    \begin{figure}[tbp]
+      \centering
+      %\rule{\textwidth}{0.005in}
+      \includegraphics[width=0.75\textwidth]{#1}
+      \caption[#2]{#3}\label{fig:#1}
+      %\rule{\textwidth}{0.005in}
+    \end{figure}
+  }
+
+  % Scaled figure.
+  \newcommand{\figscaled}[4]{
+    \begin{figure}[tbp]
+      \centering
+      \includegraphics[scale=#4]{#1}
+      \caption[#2]{#3}\label{fig:#1}
+    \end{figure}
+  }
+
+  % Figure with custom width.
+  \newcommand{\figcustomwidth}[4]{
+    \begin{figure}[tbp]
+      \centering
+      \includegraphics[width=#4]{#1}
+      \caption[#2]{#3}\label{fig:#1}
+    \end{figure}
+  }
+
+% References.
+  \newcommand{\appendixref}[1]{\hyperref[#1]{Appendix \ref*{#1}}}
+  \newcommand{\chapterref}[1]{\hyperref[#1]{Chapter \ref*{#1}}}
+  \newcommand{\sectionref}[1]{\hyperref[#1]{Section \ref*{#1}}}
+  \newcommand{\figureref}[1]{\hyperref[#1]{Figure \ref*{#1}}}
+  \newcommand{\tableref}[1]{\hyperref[#1]{Table \ref*{#1}}}
+  \newcommand{\listingref}[1]{\hyperref[#1]{Listing \ref*{#1}}}
+  \newcommand{\onpage}[1]{on \hyperref[#1]{page \pageref*{#1}}}
+  \newcommand{\equationref}[1]{\hyperref[#1]{Equation \ref*{#1}}}
+  \newcommand{\algorithmref}[1]{\hyperref[#1]{Algorithm \ref*{#1}}}
+  %\newcommand{\sprintref}[1]{\hyperref[#1]{Sprint \ref*{#1}}}
+
+% Column types for tabulars.
+%\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Fix todo notes with externalize
+\let\oldTodo\todo
+\renewcommand{\todo}[1]{\tikzexternaldisable{}\oldTodo{#1}\tikzexternalenable{}}
+
+% Fixme stuff.
+%\newcommand{\fillin}[1]{\fxnote*[inline]{#1}{Fill in: }}
+
+% Vector command.
+%\newcommand{\omatrix}[1]{\ensuremath{\boldsymbol{#1}}}
+
+% A better plus minus sign.
+\makeatletter
+\newcommand{\gpm}{\mathbin{\mathpalette\@gpm\relax}}
+\newcommand{\@gpm}[2]{\ooalign{%
+  \raisebox{.1\height}{$#1+$}\cr
+  \smash{\raisebox{-.6\height}{$#1-$}}\cr}}
+\makeatother
+
+
+\definecolor{rosso}{RGB}{220,57,18}
+\definecolor{giallo}{RGB}{255,153,0}
+\definecolor{blu}{RGB}{102,140,217}
+\definecolor{verde}{RGB}{16,150,24}
+\definecolor{viola}{RGB}{153,0,153}
+
+\makeatletter
+
+\tikzstyle{chart}=[
+    legend label/.style={font={\scriptsize},anchor=west,align=left},
+    legend box/.style={rectangle, draw, minimum size=5pt},
+    axis/.style={black,semithick,->},
+    axis label/.style={anchor=east,font={\tiny}},
+]
+
+\tikzstyle{bar chart}=[
+    chart,
+    bar width/.code={
+        \pgfmathparse{##1/2}
+        \global\let\bar@w\pgfmathresult
+    },
+    bar/.style={very thick, draw=white},
+    bar label/.style={font={\bf\small},anchor=north},
+    bar value/.style={font={\footnotesize}},
+    bar width=.75,
+]
+
+\tikzstyle{pie chart}=[
+    chart,
+    slice/.style={line cap=round, line join=round, very thick,draw=white},
+    pie title/.style={font={\bf}},
+    slice type/.style 2 args={
+        ##1/.style={fill=##2},
+        values of ##1/.style={}
+    }
+]
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+
+\newcommand{\pie}[3][]{
+    \begin{scope}[#1]
+    \pgfmathsetmacro{\curA}{90}
+    \pgfmathsetmacro{\r}{1}
+    \def\c{(0,0)}
+    \node[pie title] at (90:1.3) {#2};
+    \foreach \v/\s in{#3}{
+        \pgfmathsetmacro{\deltaA}{\v/100*360}
+        \pgfmathsetmacro{\nextA}{\curA + \deltaA}
+        \pgfmathsetmacro{\midA}{(\curA+\nextA)/2}
+
+        \path[slice,\s] \c
+            -- +(\curA:\r)
+            arc (\curA:\nextA:\r)
+            -- cycle;
+        \pgfmathsetmacro{\d}{max((\deltaA * -(.5/50) + 1) , .5)}
+
+        \begin{pgfonlayer}{foreground}
+        \path \c -- node[pos=\d,pie values,values of \s]{$\v\%$} +(\midA:\r);
+        \end{pgfonlayer}
+
+        \global\let\curA\nextA
+    }
+    \end{scope}
+}
+
+\newcommand{\legend}[2][]{
+    \begin{scope}[#1]
+    \path
+        \foreach \n/\s in {#2}
+            {
+                  ++(0,-10pt) node[\s,legend box] {} +(5pt,0) node[legend label] {\n}
+            }
+    ;
+    \end{scope}
+}
+
+% each of the following has two versions
+%   \crefname{environmentname}{singular}{plural}, to be used mid-sentence
+%   \Crefname{environmentname}{singular}{plural}, to be used at the beginning of a sentence
+\crefname{table}{table}{tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{figure}{figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{equation}{equation}{equations}
+\Crefname{equation}{Equation}{Equations}
+
+
+\let\URL\url
+\makeatletter
+\def\url#1{\@URL#1;;\@nil}
+\def\@URL#1;#2;#3\@nil{%
+  \URL{#1}\ifx\relax#2\relax\else; \URL{#2}\fi}
+\makeatother
+
+\newcommand\pro{\item[$+$]}
+\newcommand\con{\item[$-$]}
+
+% Vores egne
+\let\oldsection\section
+\renewcommand{\section}[1]{\FloatBarrier\oldsection{#1}}

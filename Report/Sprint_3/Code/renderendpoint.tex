@@ -1,0 +1,23 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+    if afu.is_data_empty(request):
+        return jsonify({'chart_type': 'text', 'content': 'Missing data'})
+
+    if field_set.is_valid(request):
+        file_path = field_set.cleaned_data["Dataset"]
+\end{minted}
+\caption{Render endpoint}
+\label{lst:renderendpoint}
+\end{listing}
+
+\noindent

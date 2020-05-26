@@ -1,0 +1,110 @@
+Supervisor meeting 23/3 12:55
+
+Attendies:
+
+Kristian V
+Kristian O
+Jonas
+Jeppe
+Rasmus
+
+Tung
+
+Location: Meeting was held on discord due to COVID 19.
+
+The title is okay, but the subsection could use refinement.
+Tung asks what "entity level" means. Tung suggest remove it as it doesnt make sense because it is not highlevel enough.
+
+Tung suggest ANOMEL as new title should be possible.
+
+Tung says we shouldnt start the report at section 0 but at section 1.
+
+More details about how we organise meetings.
+We should discuss them more to explain discord and gitlab since sensor dont know those.
+
+We should have more info on the database like schema. Specific data about this project. We figure out wich table we would use and then draw schema for that.
+
+Outlier detection(deleted chaper??), we follow the paper to talk about what is outlier detection in time series, so that should include the formal definition.
+
+No hyphen in time series and it is not in upper case just normal.  
+
+We should stick to one term, "outlier" or "anomaly" not both.
+We choose anomaly. We can replace it all with anomaly detection. 
+
+??Formal definition for (1) Time series, (2) Anomaly detection in Time Series?? 
+
+In the 1st sprint, we add some application of anomaly detection in time series
+
+in the first sprint we can cite from a paper like the heart attack to explain the application of anomali detection.
+
+The table describing the subgroup does not explain the total collaboration. But we should add a figure later for what group we will collaborate with. We can add it later but it is important.
+
+All figures should be same/simerlar size. 2.1 and 2.2 not at all same.
+
+The text inside figures should be same size/font to make it look alike as much as possible.
+
+The equation should be centered, and the sum sign should be big sigma.
+
+The loss function of the autoencoder should be in the autoencoder section. The loss function try to reconstruct the input of the autoencoder.
+
+We dont use the autoencoder, we just use the VAE so its more like related work or preliminary so maybe we should not explain autoencoder as much??
+
+Anomanli detection in time series using NN.
+
+We should be consistent about the notation in math. The notation for scalar vector is someting-something in latex and for vector it is something-something. We should not use italic. Vector use mathbf and matrix mathbf in uppercase, se in a function we can find the scalar vector and the matrix easy.
+
+We say it is our contribution that we add RNN to VAE in time series anomali detection. 
+
+Adding Recurrent Neural Network based Autoencoder + Anomaly dectection in time series using  Recurrent Neural Network based Autoencoder Adding Variational Recurrent Neural Network based Autoencoder then we say something about anomali detection using this is new and we will introduce it in this report.
+
+
+Kristian asks, how much of the math do we need to know?
+Tung says that for him the math is hard as well especially in the begining, but it is better now becuase the NN can aproximate it and we can treat NN as a blackbox.
+Tung says we dont need to understand all the mathematical parts. We can learn gradually as we are computerscience and not mathematical. 
+
+We need to know the abstract:
+What is back-propagating
+What is variational learning
+
+We sample 2 elements from bottleneck with the assumption that the samples follow a normal distribution it is okay since almost all data follow some kind of normal distribution.
+
+Kristian has a question:
+In many of the papers they explain that VAE have a function call back in addition to loss function, use it to calculate the normal distribution. They want the data to look like a normal distribution. 
+
+In the VAE we have a constriant and its a penalti for the loss function otherwise it will keep the bottleneck and so the input can be same as the bottleneck keeps for it perfect reconstruction. The bottleneck cannot cheat to have 100 or 99.99 percent so it reduce the cheating of the bottleneck to make the bottleneck only consider the features. 
+
+The loss function is a little different
+
+We can find the source code on github for a VAE implimentation
+
+we use tensorflow so we try to understand this guithub code: https://github.com/NetManAIOps/OmniAnomaly
+
+for math and probability we need to know how to multiply matrix and normal distribution stuff and what is entropy and
+
+We can copy 100 percent from the public github but we need to understand it then. We can copy what we understand.
+
+We only need to impliment the main model as the rest is normaly boilerplate code.
+
+We should explain as much as possible in the report, and we will cut it down afterwards to fit the 60 pages. We write a lot so we can cut it down easily.
+
+Tung thinks sprint 2 is too early to talk about methodlogy and solution, solution should come later otherwise the report is almost finished.
+
+We should talk about some api we use or some other groups api we use. (notebook) this is part of solution also.
+
+We should move sprint 2 content to sprint 3 and sprint 2 should contain information on queries we use to get data.
+sprint 3 can contain solution things.
+
+lack of overview design
+
+In the report he sent us they talk alot about how to get the data and such.
+
+We should make like UML or something for overview over solution and such and save the other stuff for later.
+
+Just follow super group meeting things more regarding sprint goals.
+
+we expands sprint 2 to contain more stuff so sprint 2 dont need to go to sprint 3.
+
+We fix and send when?
+We send by the end of the week.
+
+we could put resume in appendix to look more serious. 

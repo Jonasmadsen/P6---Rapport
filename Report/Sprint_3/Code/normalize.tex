@@ -1,0 +1,26 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def normalize(data):
+    max_d = max(max(data, key=lambda x: max(x)))
+    min_d = min(min(data, key=lambda x: min(x)))
+
+    # We dont wanna divide by zero when min == max
+    if max(data) == min(data):
+        return [[0 for y in x] for x in data]
+    return [[(y - min_d) / (max_d - min_d) for y in x] for x in data]
+\end{minted}
+\caption{\texttt{normalize} function in \texttt{preprocessing.py}}
+\label{lst:normalize}
+\end{listing}
+
+\noindent

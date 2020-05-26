@@ -1,0 +1,25 @@
+\begin{listing}[htbp]
+\begin{minted}
+[
+frame=single,
+framesep=3mm,
+breaklines,
+linenos=true,
+xleftmargin=21pt,
+fontsize=\footnotesize,
+tabsize=4
+]
+{Python}
+def make_model(batch_size, window_size, features, gru_dim, dense_dim):
+    encoder, encoder_input = make_encoder(batch_size, window_size, features, gru_dim, dense_dim)
+    decoder = make_decoder(batch_size, window_size, features, gru_dim, dense_dim)
+    decoder_output = decoder(encoder(encoder_input)[2])
+
+    rvae = keras.Model(encoder_input, decoder_output, name='rvae')
+    return rvae
+\end{minted}
+\caption{Model.}
+\label{lst:model}
+\end{listing}
+
+\noindent

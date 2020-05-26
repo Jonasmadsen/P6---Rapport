@@ -1,0 +1,65 @@
+\section{Network Evaluation}
+When evaluating the network we will use a subset of our available datasets. Out of 62 datasets containing real-world univariate data we randomly choose 10 datasets. Of the 100 synthetic univariate datasets we also randomly choose ten datasets. Furthermore, out of the seven real-world multivariate datasets, we randomly choose two for evaluation. This is done to limit the amount of results to compare. \newline
+
+\noindent
+Table \ref{tab:datasets} shows the randomly chosen datasets. For every dataset we train five models. Training multiple models for every dataset allow us to ensure the result is consistent. The total amount of models produced will be 110 which should yield sufficient data for a good overall evaluation.
+
+\bgroup
+\def\arraystretch{1.8}
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{| m{3cm} | m{3cm} | m{3cm} |}
+        \hline
+        \textbf{Synthetic} & \textbf{Real} & \textbf{Multivariate} \\
+        \hline
+        Synthetic\_12 & Real\_1 & chfdb\_chf01\_275 \\
+        \hline
+        Synthetic\_28 & Real\_19 & ltstdb\_20221\_43 \\
+        \hline
+        Synthetic\_30 & Real\_21 & ~ \\
+        \hline
+        Synthetic\_33 & Real\_25 & ~ \\
+        \hline
+        Synthetic\_37 & Real\_26 & ~ \\
+        \hline
+        Synthetic\_54 & Real\_27 & ~ \\
+        \hline
+        Synthetic\_70 & Real\_48 & ~ \\
+        \hline
+        Synthetic\_73 & Real\_55 & ~ \\
+        \hline
+        Synthetic\_91 & Real\_56 & ~ \\
+        \hline
+        Synthetic\_94 & Real\_62 & ~ \\
+        \hline
+    \end{tabular}
+    \caption{Datasets used in the evaluation.}
+    \label{tab:datasets}
+\end{table}
+\egroup
+
+\FloatBarrier
+\subsection{Baseline Results}
+The results from \gls{iso} and \gls{lof} are shown in Table \ref{tab:baseline}. The results of the Isolation Forest show that all of the anomalies have been correctly labeled. However, the precision is very low, which means that the algorithm produces a lot of false positives. The low precision limits the usability of the prediction since the false positives obscure the true positives. \Gls{lof} performs better than (or equal) \gls{iso} in every metric. The recall is the same, however, the precision is higher and, therefore, fewer false positives. The higher precision makes \gls{lof} prediction more useful than \gls{iso} since there will be fewer false positives to obscure the true positives.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        Catagory & Algorithm            & F1       & Precision & Recall \\ \hline
+        Real     & Isolation Forest     & 0.199405 & 0.132799  & 1.0    \\ \hline
+        Synth    & Isolation Forest     & 0.012255 & 0.006181  & 1.0    \\ \hline
+        ECG      & Isolation Forest     & 0.359282 & 0.225992  & 1.0    \\ \hline
+        Real     & Local Outlier Factor & 0.626562 & 0.499859  & 1.0    \\ \hline
+        Synth    & Local Outlier Factor & 0.490043 & 0.380289  & 1.0    \\ \hline
+        ECG      & Local Outlier Factor & 0.763543 & 0.625457  & 1.0    \\ \hline
+    \end{tabular}
+    \caption{Mean values for \gls{iso} and \gls{lof} for different types datasets.}\label{tab:baseline}
+\end{table}
+
+\noindent
+We did not tune any parameters and left them as \glspl{scikit-learn} default. It is expected that better results can be achieved with more tuning. 
+
+
+\subsection{RVAE result}
+sfsdf
